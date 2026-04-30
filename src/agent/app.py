@@ -8,11 +8,29 @@ from common.config_manager import ConfigManager
 
 from agent.theme_manager import apply_theme, THEMES, THEME_SESSION_KEY
 from agent.ui_components import render_header, render_footer
+from database.db_generator import EPPDatabaseGenerator 
+
+@st.cache_resource
+def initialize_database():
+    """
+    Initialize DB once per Streamlit session.
+    Forces regeneration using reset=True.
+    """
+
+    gen = EPPDatabaseGenerator()
+
+    # IMPORTANT: regenerate DB every startup
+    gen.initialize(reset=True)
+
+    return gen.db_path
 
 # 1. Apply theme immediately at startup
 active_theme = apply_theme()
 
 st.set_page_config(page_title="EPP SLA Reporter", layout="wide")
+# --- DB INIT ---
+db_path = initialize_database()
+
 
 # --- SESSION STATE ---
 if "history" not in st.session_state:
@@ -37,14 +55,19 @@ with st.sidebar:
     st.header("🛠️ System")
     
     # DB Status
-    db_path = cfg.get_versioned_db_path()
+    #db_path = cfg.get_versioned_db_path()
     if os.path.exists(db_path):
         st.success("Database: Ready")
     else:
         st.error("Database: Missing")
     
-    if st.button("🔄 Sync S3 Data"):
+    if st.button("🔄 Sync Database from S3"):
         download_db_from_s3()
+
+    if st.button("♻️ Regenerate Database"):
+        st.cache_resource.clear()
+        initialize_database()
+        st.success("Database regenerated")
 
     st.divider()
     

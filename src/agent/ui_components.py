@@ -42,7 +42,7 @@ def render_result_panel(model_name, model_data):
         else:
             tab1, tab2 = st.tabs(["📄 Table", "📈 Chart"])
             with tab1:
-                st.dataframe(df, use_container_width=True)
+                st.dataframe(df, width="stretch")
             with tab2:
                 # CALLING THE SEPARATE FUNCTION HERE
                 render_dynamic_chart(df)
@@ -115,10 +115,10 @@ def render_dynamic_chart(df):
     # Final Render
     if fig:
         #fig.update_layout(margin=dict(l=10, r=10, t=40, b=10))
-        #st.plotly_chart(fig, use_container_width=True)
+        #st.plotly_chart(fig, width="stretch")
         # Apply the theme to the plotly object
         fig = style_plotly_figure(fig) 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     else:
         st.write("Insufficient numeric data to generate a visualization.")
 
