@@ -8,6 +8,10 @@ EPP SLA AI BI Agent is an AI-powered analytics application that converts natural
 
 The application enables business users, operations teams, and engineers to analyze EPP registry performance metrics without writing SQL.
 
+## 🚀 Live Demo
+https://epp-sla-ai-bi-agent-demo.streamlit.app/
+
+
 ### Example Questions
 
 * Show average response time for ADD-DOMAIN operations over the last 7 days
